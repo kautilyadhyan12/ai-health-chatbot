@@ -1,0 +1,58 @@
+# Web Framework
+Flask==3.0.0
+Flask-Login==0.6.3
+Flask-SQLAlchemy==3.1.1
+SQLAlchemy==2.0.23
+Flask-WTF==1.2.1
+Flask-Cors==4.0.0
+Werkzeug==3.0.1
+
+# Machine Learning Core
+llama-cpp-python==0.2.61
+torch==2.5.1
+torchvision==0.20.1
+transformers==4.35.2
+sentence-transformers==2.2.2
+faiss-cpu==1.7.4
+
+# Medical NLP 
+spacy==3.6.1
+scispacy==0.5.3
+
+# Data Processing
+pandas==2.1.3
+numpy==1.24.3
+scikit-learn==1.3.2
+scipy==1.10.1
+
+
+# Environment & Security
+python-dotenv==1.0.0
+bcrypt==4.1.2
+
+# Utilities
+python-multipart==0.0.6
+jsonlines==4.0.0
+tqdm==4.66.1
+python-dateutil==2.8.2
+Pillow==10.1.0
+requests==2.31.0
+
+# Development
+pytest==7.4.3
+black==23.11.0
+flake8==6.1.0
+
+# Additional for LLaMA
+accelerate==0.25.0
+bitsandbytes==0.41.3
+protobuf==3.20.3
+
+# Memory optimization for Windows
+psutil==5.9.6
+py-cpuinfo==9.0.0
+GPUtil==1.4.0
+
+Flask-SocketIO==5.3.6
+python-socketio==5.10.0
+python-engineio==4.9.0

@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat - MedAI Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Additional styling for chat page */
+        .chat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(13, 148, 136, 0.1));
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            border-bottom: 2px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .chat-title {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .chat-title h2 {
+            color: #064e3b;
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0;
+        }
+
+        .chat-subtitle {
+            color: #047857;
+            font-size: 1rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .chat-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-actions .btn-medical {
+            padding: 0.75rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: var(--radius-md);
+        }
+
+        .chat-actions .emergency {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border: none;
+        }
+
+        /* Chat messages  */
+        .chat-messages {
+            padding: 2rem;
+            background: #f8faf9;
+        }
+
+        .message {
+            margin-bottom: 1.5rem;
+            max-width: 85%;
+        }
+
+        .user-message {
+            margin-left: auto;
+        }
+
+        .message-content {
+            padding: 1.25rem 1.5rem;
+            border-radius: var(--radius-lg);
+            background: white;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            box-shadow: 0 2px 8px rgba(6, 78, 59, 0.08);
+        }
+
+        .user-message .message-content {
+            background: linear-gradient(135deg, #10b981, #0d9488);
+            color: white;
+            border: none;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+        }
+
+        .user-message .message-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .message-header strong {
+            font-size: 0.95rem;
+            color: #064e3b;
+            font-weight: 600;
+        }
+
+        .user-message .message-header strong {
+            color: white;
+        }
+
+        .message-time {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        .user-message .message-time {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .message-content p {
+            line-height: 1.6;
+            color: #065f46;
+            margin-bottom: 0.5rem;
+        }
+
+        .user-message .message-content p {
+            color: white;
+            font-weight: 500;
+        }
+
+        .message-content ul,
+        .message-content ol {
+            margin-left: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .message-content li {
+            margin-bottom: 0.5rem;
+            color: #047857;
+            line-height: 1.5;
+        }
+
+        .user-message .message-content li {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        
+        .chat-input-area {
+            padding: 1.5rem 2rem;
+            background: white;
+            border-top: 2px solid rgba(16, 185, 129, 0.1);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+        }
+
+        .input-container {
+            margin-bottom: 1.5rem;
+        }
+
+        #messageInput {
+            width: 100%;
+            padding: 1.25rem;
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            color: #064e3b;
+            background: #f8faf9;
+            resize: none;
+            min-height: 60px;
+            max-height: 150px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        #messageInput:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .input-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 1rem;
+        }
+
+        .input-action-btn {
+            width: 44px;
+            height: 44px;
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #10b981;
+            transition: all 0.3s ease;
+        }
+
+        .input-action-btn:hover {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+            transform: translateY(-2px);
+        }
+
+        .send-btn {
+            padding: 0.75rem 2rem;
+            background: linear-gradient(135deg, #10b981, #0d9488);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        
+        .quick-prompts {
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(16, 185, 129, 0.1);
+        }
+
+        .quick-prompts h4 {
+            color: #064e3b;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .prompts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .quick-prompt {
+            padding: 0.75rem 1rem;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: var(--radius-md);
+            color: #064e3b;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-prompt:hover {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+            transform: translateY(-2px);
+        }
+
+        /* Info sidebar  */
+        .info-sidebar {
+            background: #f8faf9;
+            border-left: 2px solid rgba(16, 185, 129, 0.1);
+            padding: 1.5rem;
+        }
+
+        .info-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(6, 78, 59, 0.05);
+        }
+
+        .info-card h4 {
+            color: #064e3b;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.05);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #065f46;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .info-item span:last-child {
+            color: #064e3b;
+            font-weight: 600;
+        }
+
+        #sessionId {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        
+        .safety-meter {
+            margin: 1.5rem 0;
+        }
+
+        .meter-bar {
+            height: 10px;
+            background: rgba(16, 185, 129, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .safety-score {
+            color: #10b981;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .safety-note {
+            color: #065f46;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        
+        .tips-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tips-list li {
+            padding: 0.5rem 0;
+            color: #065f46;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tips-list li:before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        
+        .quick-response {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.75rem 1rem;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: var(--radius-md);
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-response:hover {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+            transform: translateX(5px);
+        }
+
+        .quick-response i {
+            font-size: 1.1rem;
+            color: #10b981;
+        }
+
+        .quick-response:hover i {
+            color: white;
+        }
+
+        .quick-response span {
+            color: #064e3b;
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .quick-response:hover span {
+            color: white;
+        }
+
+        .quick-response.emergency {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .quick-response.emergency i {
+            color: #ef4444;
+        }
+
+        .quick-response.emergency:hover {
+            background: #ef4444;
+            border-color: #ef4444;
+        }
+
+        
+        .emergency-card {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+            border: 2px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .emergency-card h4 {
+            color: #dc2626;
+        }
+
+        .emergency-card p {
+            color: #991b1b;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .emergency-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .emergency-btn {
+            flex: 1;
+            padding: 0.75rem;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .emergency-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        
+        .emergency-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 500px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .emergency-alert {
+            background: #fef2f2;
+            border: 2px solid #fecaca;
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+        }
+
+        .emergency-alert p {
+            color: #991b1b;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .emergency-alert ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .emergency-alert li {
+            color: #991b1b;
+            margin-bottom: 0.5rem;
+        }
+
+        .emergency-numbers {
+            background: white;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            border: 1px solid #fecaca;
+        }
+
+        .emergency-numbers p {
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem 2rem;
+            background: #f8faf9;
+            border-top: 1px solid rgba(16, 185, 129, 0.1);
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .modal-footer .btn {
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+        }
+
+        
+        .chat-footer {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f8faf9;
+            border-top: 2px solid rgba(16, 185, 129, 0.1);
+            margin-top: 2rem;
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+        }
+
+        .chat-footer p {
+            color: #065f46;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        
+        @media (max-width: 1024px) {
+            .chat-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-sidebar {
+                border-left: none;
+                border-top: 2px solid rgba(16, 185, 129, 0.1);
+                margin-top: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .chat-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+            
+            .chat-actions {
+                justify-content: center;
+            }
+            
+            .message {
+                max-width: 95%;
+            }
+            
+            .prompts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .emergency-buttons {
+                flex-direction: column;
+            }
+            
+            .modal-footer {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .chat-messages {
+                padding: 1rem;
+            }
+            
+            .chat-input-area {
+                padding: 1rem;
+            }
+            
+            .input-actions {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .info-card {
+                padding: 1rem;
+            }
+            
+            .quick-response {
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <h1>MedAI<span>Assistant</span></h1>
+            </div>
+            <div class="nav-links">
+                <a href="/dashboard"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+                <a href="/logout" class="btn-nav"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </nav>
+
+        <main class="chat-main">
+            <div class="chat-container">
+                <!-- Sidebar -->
+                <aside class="chat-sidebar">
+                    <div class="sidebar-header">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div>
+                                <h3>Medical Assistant</h3>
+                                <p class="user-status">
+                                    <span class="status-dot active"></span>
+                                    <span>Online</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-menu">
+                        <button class="sidebar-item active" data-section="new-chat">
+                            <i class="fas fa-comment-medical"></i>
+                            <span>New Chat</span>
+                        </button>
+                        <button class="sidebar-item" data-section="saved-chats">
+                            <i class="fas fa-save"></i>
+                            <span>Saved Chats</span>
+                        </button>
+                        <button class="sidebar-item" data-section="quick-templates">
+                            <i class="fas fa-bolt"></i>
+                            <span>Quick Templates</span>
+                        </button>
+                    </div>
+
+                    <div class="sidebar-sections">
+                        <div class="sidebar-section active" id="new-chat-section">
+                            <h4><i class="fas fa-plus-circle"></i> Start New Chat</h4>
+                            <p>Begin a new conversation with your AI medical assistant.</p>
+                        </div>
+
+                        <div class="sidebar-section" id="saved-chats-section">
+                            <h4><i class="fas fa-bookmark"></i> Saved Chats</h4>
+                            <div class="saved-chats-list">
+                                
+                            </div>
+                        </div>
+
+                        <div class="sidebar-section" id="quick-templates-section">
+                            <h4><i class="fas fa-file-medical-alt"></i> Quick Templates</h4>
+                            <div class="templates-list">
+                                <button class="template-btn" data-template="symptom-check">
+                                    <i class="fas fa-stethoscope"></i>
+                                    <span>Symptom Check</span>
+                                </button>
+                                <button class="template-btn" data-template="medication-info">
+                                    <i class="fas fa-pills"></i>
+                                    <span>Medication Info</span>
+                                </button>
+                                <button class="template-btn" data-template="lifestyle-advice">
+                                    <i class="fas fa-heart"></i>
+                                    <span>Lifestyle Advice</span>
+                                </button>
+                                <button class="template-btn" data-template="emergency-guide">
+                                    <i class="fas fa-ambulance"></i>
+                                    <span>Emergency Guide</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-footer">
+                        <div class="ai-info">
+                            <h4><i class="fas fa-robot"></i> AI Model Info</h4>
+                            <p>Powered by LLaMA-3 8B Q3_K_S</p>
+                            <p>Medical RAG System v1.0</p>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Chat Area -->
+                <div class="chat-area">
+                    
+                    <div class="chat-header">
+                        <div class="chat-title">
+                            <h2>
+                                <i class="fas fa-user-md" style="color: #10b981;"></i>
+                                MedAI Medical Assistant
+                            </h2>
+                            <p class="chat-subtitle">
+                                <i class="fas fa-shield-alt"></i> 
+                                Powered by LLaMA-3 8B & Medical RAG System
+                            </p>
+                            <div class="online-status">
+                                <span class="status-dot active"></span>
+                                <span style="color: #065f46; font-weight: 500;">24/7 Medical Support Active</span>
+                            </div>
+                        </div>
+
+                        <div class="chat-actions">
+                            <button class="btn-medical" id="clearChat" title="Clear Chat">
+                                <i class="fas fa-trash"></i>
+                                Clear
+                            </button>
+                            <button class="btn-medical" id="saveChat" title="Save Chat">
+                                <i class="fas fa-save"></i>
+                                Save
+                            </button>
+                            <button class="btn-medical emergency" id="emergencyBtn" title="Emergency">
+                                <i class="fas fa-ambulance"></i>
+                                Emergency
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Chat Messages -->
+                    <div class="chat-messages" id="chatMessages">
+                        
+                        <div class="message ai-message">
+                            <div class="message-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <strong>MedAI Assistant</strong>
+                                    <span class="message-time">Just now</span>
+                                </div>
+                                <p style="margin-bottom: 12px; font-size: 1.05rem; color: #064e3b;">
+                                    Hello! I'm your AI medical assistant powered by LLaMA-3 8B with Retrieval-Augmented
+                                    Generation. I'm here to provide general health information and guidance.
+                                </p>
+                                <p style="font-weight: 600; color: #064e3b; margin-bottom: 8px;">I can help with:</p>
+                                <ul style="margin-left: 1.5rem; margin-bottom: 12px;">
+                                    <li style="color: #065f46; margin-bottom: 6px;">Understanding symptoms and conditions</li>
+                                    <li style="color: #065f46; margin-bottom: 6px;">General medication information</li>
+                                    <li style="color: #065f46; margin-bottom: 6px;">Lifestyle and wellness advice</li>
+                                    <li style="color: #065f46; margin-bottom: 6px;">First aid information</li>
+                                    <li style="color: #065f46;">Health education resources</li>
+                                </ul>
+                                <p style="margin-bottom: 8px;">
+                                    <strong style="color: #064e3b;">⚠️ Important:</strong> 
+                                    <span style="color: #065f46;">I am an AI assistant and cannot provide medical
+                                    diagnoses or emergency services. Always consult healthcare professionals for medical
+                                    concerns.</span>
+                                </p>
+                                <p style="color: #064e3b; font-weight: 500; margin-top: 12px;">
+                                    How can I assist you today?
+                                </p>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="message user-message">
+                            <div class="message-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <strong>You</strong>
+                                    <span class="message-time">Just now</span>
+                                </div>
+                                <p style="font-size: 1.05rem; font-weight: 500;">
+                                    What are common flu symptoms?
+                                </p>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="message ai-message">
+                            <div class="message-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <strong>MedAI Assistant</strong>
+                                    <span class="message-time">Just now</span>
+                                </div>
+                                <p style="margin-bottom: 10px; color: #064e3b;">
+                                    Common flu (influenza) symptoms typically include:
+                                </p>
+                                <ul style="margin-left: 1.5rem; margin-bottom: 10px;">
+                                    <li style="color: #065f46; margin-bottom: 5px;"><strong>Fever</strong> (usually high, 100°F-102°F or higher)</li>
+                                    <li style="color: #065f46; margin-bottom: 5px;"><strong>Cough</strong> (often dry and persistent)</li>
+                                    <li style="color: #065f46; margin-bottom: 5px;"><strong>Sore throat</strong></li>
+                                    <li style="color: #065f46; margin-bottom: 5px;"><strong>Runny or stuffy nose</strong></li>
+                                    <li style="color: #065f46; margin-bottom: 5px;"><strong>Body aches</strong> (muscle and joint pain)</li>
+                                    <li style="color: #065f46; margin-bottom: 5px;"><strong>Headache</strong></li>
+                                    <li style="color: #065f46; margin-bottom: 5px;"><strong>Fatigue</strong> (tiredness and weakness)</li>
+                                    <li style="color: #065f46;">Chills and sweats</li>
+                                </ul>
+                                <p style="color: #065f46; font-size: 0.95rem; background: rgba(16, 185, 129, 0.05); padding: 10px; border-radius: 8px; border-left: 4px solid #10b981;">
+                                    <strong>Note:</strong> Symptoms usually appear 1-4 days after exposure and can last for 1-2 weeks. 
+                                    If you have difficulty breathing, chest pain, confusion, or severe weakness, 
+                                    seek medical attention immediately.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="chat-input-area">
+                        <div class="input-container">
+                            <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                                <div class="typing-dots">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                                <span>MedAI is typing...</span>
+                            </div>
+
+                            <textarea id="messageInput"
+                                placeholder="Type your health-related question here... (Press Shift+Enter for new line)"
+                                rows="3"></textarea>
+
+                            <div class="input-actions">
+                                <button class="input-action-btn" title="Attach File" onclick="chatApp.attachFile()">
+                                    <i class="fas fa-paperclip"></i>
+                                </button>
+                                <button class="input-action-btn" title="Voice Input"
+                                    onclick="chatApp.startVoiceInput()">
+                                    <i class="fas fa-microphone"></i>
+                                </button>
+                                <button class="send-btn" id="sendBtn">
+                                    <i class="fas fa-paper-plane"></i>
+                                    <span>Send Message</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="quick-prompts">
+                            <h4><i class="fas fa-bolt"></i> Quick Questions:</h4>
+                            <div class="prompts-grid">
+                                <button class="quick-prompt" data-prompt="What are common flu symptoms?">
+                                    <i class="fas fa-temperature-high"></i> Flu Symptoms
+                                </button>
+                                <button class="quick-prompt" data-prompt="How to lower blood pressure naturally?">
+                                    <i class="fas fa-heartbeat"></i> Blood Pressure
+                                </button>
+                                <button class="quick-prompt" data-prompt="What foods are good for heart health?">
+                                    <i class="fas fa-heart"></i> Heart Health
+                                </button>
+                                <button class="quick-prompt" data-prompt="How much water should I drink daily?">
+                                    <i class="fas fa-tint"></i> Hydration
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar -->
+                <aside class="info-sidebar">
+                    <div class="info-card">
+                        <h4><i class="fas fa-info-circle"></i> Chat Information</h4>
+                        <div class="info-item">
+                            <span class="info-label">Session ID:</span>
+                            <code id="sessionId">MED-{{ '%06d' % range(100000, 999999) | random }}</code>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Start Time:</span>
+                            <span id="startTime">Just now</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">AI Model:</span>
+                            <span>LLaMA-3 8B Q3_K_S</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Response Time:</span>
+                            <span id="responseTime">0.5s avg</span>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h4><i class="fas fa-shield-alt"></i> Safety Status</h4>
+                        <div class="safety-meter">
+                            <div class="meter-bar">
+                                <div class="meter-fill" style="width: 85%"></div>
+                            </div>
+                            <span class="safety-score">85% Safe</span>
+                        </div>
+                        <p class="safety-note">All responses are reviewed for medical accuracy and safety.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h4><i class="fas fa-lightbulb"></i> Quick Tips</h4>
+                        <ul class="tips-list">
+                            <li>Be specific about symptoms</li>
+                            <li>Include duration of symptoms</li>
+                            <li>Mention any existing conditions</li>
+                            <li>Ask one question at a time</li>
+                            <li>Provide age if relevant</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <h4><i class="fas fa-bolt"></i> Quick Responses</h4>
+                        <div class="quick-response" data-response-type="symptom">
+                            <i class="fas fa-stethoscope"></i>
+                            <span>Ask for symptom details</span>
+                        </div>
+                        <div class="quick-response" data-response-type="medication">
+                            <i class="fas fa-pills"></i>
+                            <span>Medication disclaimer</span>
+                        </div>
+                        <div class="quick-response emergency" data-response-type="emergency">
+                            <i class="fas fa-ambulance"></i>
+                            <span>Emergency response</span>
+                        </div>
+                    </div>
+
+                    <div class="info-card emergency-card">
+                        <h4><i class="fas fa-ambulance"></i> Emergency Help</h4>
+                        <p>If this is a medical emergency:</p>
+                        <div class="emergency-buttons">
+                            <button class="emergency-btn" id="callEmergency">
+                                <i class="fas fa-phone"></i> Call 911
+                            </button>
+                            <button class="emergency-btn" id="emergencyInfo">
+                                <i class="fas fa-first-aid"></i> First Aid Guide
+                            </button>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </main>
+
+        <!-- Emergency Modal -->
+        <div class="modal emergency-modal" id="emergencyModal">
+            <div class="modal-content">
+                <div class="modal-header emergency">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>⚠️ MEDICAL EMERGENCY DETECTED</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="emergency-alert">
+                        <p><strong>This appears to be a medical emergency.</strong></p>
+                        <p>Please take immediate action:</p>
+                        <ol>
+                            <li>Call emergency services (911/112) immediately</li>
+                            <li>Do not wait for AI response</li>
+                            <li>Stay with the person if safe to do so</li>
+                            <li>Follow dispatcher instructions</li>
+                        </ol>
+                        <div class="emergency-numbers">
+                            <p><strong>Emergency Numbers:</strong></p>
+                            <p>🇺🇸 USA: 911</p>
+                            <p>🇪🇺 EU: 112</p>
+                            <p>🇬🇧 UK: 999</p>
+                            <p>🇦🇺 Australia: 000</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="confirmEmergency">
+                        I understand, call emergency services
+                    </button>
+                    <button class="btn btn-secondary" id="cancelEmergency">
+                        This is not an emergency
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="chat-footer">
+            <p>⚠️ <strong>Medical Disclaimer:</strong> This AI assistant provides general health information only and is
+                not a substitute for professional medical advice, diagnosis, or treatment.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+</body>
+
+</html>

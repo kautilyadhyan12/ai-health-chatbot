@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat History - MedAI Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <div class="navbar-brand">
+                    <i class="fas fa-heartbeat"></i>
+                    <h1>MedAI</h1>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="/dashboard" class="nav-item">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Dashboard</span>
+                </a>
+                <a href="/chat" class="nav-item">
+                    <i class="fas fa-comment-medical"></i>
+                    <span>New Chat</span>
+                </a>
+                <a href="#history" class="nav-item active">
+                    <i class="fas fa-history"></i>
+                    <span>Chat History</span>
+                </a>
+                <a href="#analytics" class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytics</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="health-tip">
+                    <h4><i class="fas fa-database"></i> Storage Info</h4>
+                    <p id="storageInfo">0 KB used • Auto-delete: 90 days</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="history-container">
+                
+                <div class="history-header">
+                    <div>
+                        <h2>Chat History</h2>
+                        <p class="text-muted">View and manage your conversation history</p>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" id="exportAllBtn">
+                            <i class="fas fa-download"></i> Export All
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="history-filters">
+                    <div class="filter-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search conversations...">
+                    </div>
+                    <select id="dateFilter" class="filter-select">
+                        <option value="all">All Time</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                    </select>
+                    <select id="topicFilter" class="filter-select">
+                        <option value="all">All Topics</option>
+                        <option value="symptom">Symptoms</option>
+                        <option value="medication">Medication</option>
+                        <option value="lifestyle">Lifestyle</option>
+                    </select>
+                </div>
+
+                <!-- History List -->
+                <div class="history-list" id="historyList">
+                    <div class="empty-state">
+                        <i class="fas fa-history"></i>
+                        <h3>No chat history yet</h3>
+                        <p>Start a conversation with MedAI Assistant to see your history here.</p>
+                        <a href="/chat" class="btn btn-primary">
+                            <i class="fas fa-comment-medical"></i> Start a Chat
+                        </a>
+                    </div>
+                </div>
+
+                
+                <div class="pagination" id="pagination"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Alert Container -->
+    <div id="alertContainer"></div>
+
+    <script src="{{ url_for('static', filename='js/history.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+{
+  "medical_faqs": [
+    {
+      "question": "What are common flu symptoms?",
+      "answer": "Common flu symptoms include fever, cough, sore throat, runny or stuffy nose, body aches, headache, chills, fatigue, and sometimes diarrhea and vomiting. Symptoms usually come on suddenly.",
+      "category": "infectious_diseases",
+      "severity": "moderate"
+    },
+    {
+      "question": "How to manage high blood pressure?",
+      "answer": "High blood pressure can be managed through lifestyle changes including regular exercise, maintaining a healthy weight, reducing sodium intake, limiting alcohol, quitting smoking, managing stress, and taking prescribed medications if needed. Regular monitoring is important.",
+      "category": "chronic_conditions",
+      "severity": "serious"
+    },
+    {
+      "question": "What is a healthy diet?",
+      "answer": "A healthy diet includes plenty of fruits and vegetables, whole grains, lean proteins, and healthy fats. Limit processed foods, added sugars, and saturated fats. Stay hydrated with water and practice portion control.",
+      "category": "nutrition",
+      "severity": "low"
+    },
+    {
+      "question": "How much sleep do adults need?",
+      "answer": "Most adults need 7-9 hours of sleep per night for optimal health. Consistent sleep schedule, comfortable sleep environment, and avoiding screens before bed can improve sleep quality.",
+      "category": "lifestyle",
+      "severity": "low"
+    },
+    {
+      "question": "What are signs of dehydration?",
+      "answer": "Signs of dehydration include thirst, dry mouth, fatigue, dizziness, dark yellow urine, decreased urination, dry skin, and headache. Severe dehydration requires immediate medical attention.",
+      "category": "emergency",
+      "severity": "moderate"
+    },
+    {
+      "question": "How to recognize a heart attack?",
+      "answer": "Heart attack symptoms include chest pain or discomfort, pain in arms, back, neck or jaw, shortness of breath, nausea, lightheadedness, and cold sweat. Women may experience different symptoms like fatigue and back pain. Call emergency services immediately.",
+      "category": "emergency",
+      "severity": "critical"
+    },
+    {
+      "question": "What is diabetes?",
+      "answer": "Diabetes is a chronic condition where the body cannot properly process glucose. Type 1 is autoimmune, Type 2 is often lifestyle-related. Symptoms include increased thirst, frequent urination, hunger, fatigue, and blurred vision. Management includes diet, exercise, monitoring, and medication.",
+      "category": "chronic_conditions",
+      "severity": "serious"
+    },
+    {
+      "question": "How to prevent COVID-19?",
+      "answer": "Prevent COVID-19 by getting vaccinated, wearing masks in crowded places, practicing hand hygiene, maintaining physical distance, ensuring good ventilation, and staying home when sick. Follow current public health guidelines.",
+      "category": "infectious_diseases",
+      "severity": "moderate"
+    },
+    {
+      "question": "What is anxiety?",
+      "answer": "Anxiety is a normal stress response but becomes a disorder when excessive. Symptoms include worry, restlessness, fatigue, difficulty concentrating, irritability, muscle tension, and sleep problems. Treatment may include therapy, medication, and lifestyle changes.",
+      "category": "mental_health",
+      "severity": "moderate"
+    },
+    {
+      "question": "How to treat a fever?",
+      "answer": "For fever: rest, drink plenty of fluids, take fever reducers like acetaminophen or ibuprofen (follow dosage instructions), use cool compresses, and wear lightweight clothing. Seek medical help if fever is very high, lasts more than 3 days, or is accompanied by severe symptoms.",
+      "category": "symptoms",
+      "severity": "low"
+    }
+  ],
+  "disclaimer": "This information is for educational purposes only and not a substitute for professional medical advice. Always consult with healthcare professionals for medical concerns.",
+  "last_updated": "2024-01-01",
+  "version": "1.0.0"
+}

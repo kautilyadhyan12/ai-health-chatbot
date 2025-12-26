@@ -1,0 +1,102 @@
+
+
+
+.chart-container {
+    position: relative !important;
+    height: 250px !important;
+    max-height: 250px !important;
+    min-height: 250px !important;
+    overflow: hidden !important;
+    resize: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Analytics section  */
+.analytics-card .chart-container {
+    height: 200px !important;
+    max-height: 200px !important;
+    min-height: 200px !important;
+}
+
+/* Canvas element  */
+canvas {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Monthly summary container */
+.monthly-summary {
+    max-height: 180px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+/* Prevent auto-resizing */
+.chart-card, .analytics-card {
+    min-height: 250px;
+    max-height: 250px;
+    overflow: hidden !important;
+}
+
+/* Analytics grid specific */
+.analytics-stats .analytics-card {
+    height: 300px;
+    max-height: 300px;
+}
+
+.analytics-stats .analytics-card.large {
+    height: 300px;
+    max-height: 300px;
+}
+
+.analytics-grid .analytics-card {
+    height: 250px;
+    max-height: 250px;
+}
+
+
+.chart-card {
+    height: 320px !important; 
+    max-height: 320px !important;
+}
+
+
+.chart-container::-webkit-scrollbar {
+    display: none !important;
+}
+
+.chart-container {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+}
+/* Green-themed charts */
+.chart-container canvas {
+    border-radius: var(--radius-lg);
+}
+
+/*  Chart.js */
+.chart-green {
+    --chart-color-1: #10B981;
+    --chart-color-2: #34D399;
+    --chart-color-3: #059669;
+    --chart-color-4: #A7F3D0;
+    --chart-color-5: #065F46;
+}
+
+/* Animated chart bars */
+@keyframes chartBarGrow {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+}
+
+.chart-bar {
+    animation: chartBarGrow 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: bottom;
+}

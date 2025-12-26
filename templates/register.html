@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - MedAI Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <!-- Left Panel -->
+        <div class="auth-left-panel">
+            <div class="auth-brand">
+                <a href="/" class="back-home">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+                <div class="brand-logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <h1>Med<span>AI</span></h1>
+                </div>
+                <h2>Join MedAI Today</h2>
+                <p>Start your journey with AI-powered medical assistance</p>
+            </div>
+            
+            <div class="registration-benefits">
+                <h3><i class="fas fa-gift"></i> Free Account Benefits</h3>
+                <div class="benefit-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Unlimited AI medical consultations</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>24/7 access to LLaMA-3 8B assistant</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Secure chat history storage</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Personal health analytics</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>No credit card required</span>
+                </div>
+            </div>
+            
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <i class="fas fa-quote-left"></i>
+                    <p>"MedAI helped me understand my symptoms better and guided me to seek proper medical care."</p>
+                </div>
+                <div class="testimonial-author">
+                    <strong>Dr. Sarah Johnson</strong>
+                    <span>General Practitioner</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel - Registration Form -->
+        <div class="auth-right-panel">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2><i class="fas fa-user-plus"></i> Create Your Account</h2>
+                    <p>Fill in your details to get started</p>
+                </div>
+                
+                <form id="register-form" class="auth-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="username">
+                                <i class="fas fa-user"></i> Username
+                            </label>
+                            <input type="text" id="username" name="username" required 
+                                   placeholder="Choose a username">
+                            <div class="input-hint">Min. 3 characters</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">
+                                <i class="fas fa-envelope"></i> Email
+                            </label>
+                            <input type="email" id="email" name="email" required 
+                                   placeholder="Enter your email">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="password">
+                                <i class="fas fa-lock"></i> Password
+                            </label>
+                            <div class="password-input">
+                                <input type="password" id="password" name="password" required 
+                                       placeholder="Create a password">
+                                <button type="button" class="toggle-password" id="togglePassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="password-strength">
+                                <div class="strength-meter">
+                                    <div class="strength-fill" id="strengthFill"></div>
+                                </div>
+                                <span id="strengthText">Password strength</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmPassword">
+                                <i class="fas fa-lock"></i> Confirm Password
+                            </label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" required 
+                                   placeholder="Confirm your password">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="medicalBackground">
+                            <i class="fas fa-stethoscope"></i> Medical Background (Optional)
+                        </label>
+                        <select id="medicalBackground" name="medicalBackground">
+                            <option value="">Select if applicable</option>
+                            <option value="patient">Patient</option>
+                            <option value="medical_student">Medical Student</option>
+                            <option value="healthcare_pro">Healthcare Professional</option>
+                            <option value="researcher">Medical Researcher</option>
+                            <option value="general">General User</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group terms">
+                        <label class="checkbox">
+                            <input type="checkbox" name="terms" required>
+                            <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" name="medical_disclaimer" required>
+                            <span>I understand this is an AI assistant and not a substitute for professional medical advice</span>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn-medical-primary btn-full">
+                        <i class="fas fa-user-plus"></i> Create Free Account
+                    </button>
+                    
+                    <div class="auth-divider">
+                        <span>Already have an account?</span>
+                    </div>
+                    
+                    <a href="/login" class="btn-medical-outline btn-full">
+                        <i class="fas fa-sign-in-alt"></i> Login to Existing Account
+                    </a>
+                </form>
+                
+                <div class="auth-footer">
+                    <div class="security-info">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <strong>Security First</strong>
+                            <p>Your data is encrypted and never shared with third parties</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="medical-disclaimer">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p><strong>Important:</strong> This AI assistant is for informational purposes only. In case of medical emergency, call emergency services immediately.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Container -->
+    <div id="alertContainer"></div>
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+        });
+        
+        // Password strength checker
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            const strengthFill = document.getElementById('strengthFill');
+            const strengthText = document.getElementById('strengthText');
+            
+            let strength = 0;
+            let text = 'Very Weak';
+            let color = '#ef4444';
+            
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            switch(strength) {
+                case 1:
+                    text = 'Weak';
+                    color = '#f97316';
+                    break;
+                case 2:
+                    text = 'Fair';
+                    color = '#eab308';
+                    break;
+                case 3:
+                    text = 'Good';
+                    color = '#22c55e';
+                    break;
+                case 4:
+                    text = 'Strong';
+                    color = '#16a34a';
+                    break;
+            }
+            
+            strengthFill.style.width = (strength * 25) + '%';
+            strengthFill.style.backgroundColor = color;
+            strengthText.textContent = text;
+            strengthText.style.color = color;
+        });
+        
+        // Confirm password validation
+        const confirmPassword = document.getElementById('confirmPassword');
+        confirmPassword.addEventListener('input', function() {
+            const password = passwordInput.value;
+            if (this.value && password !== this.value) {
+                this.style.borderColor = '#ef4444';
+            } else {
+                this.style.borderColor = '#d1d5db';
+            }
+        });
+    </script>
+</body>
+</html>
